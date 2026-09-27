@@ -15,10 +15,8 @@ static void gyroToRadians(float& gx, float& gy, float& gz)
 }
 
 
-static void computeQuaternionDerivative(
-    float gx, float gy, float gz,
-    float& qDot1, float& qDot2,
-    float& qDot3, float& qDot4)
+static void computeQuaternionDerivative(float gx, float gy, float gz,
+            float& qDot1, float& qDot2, float& qDot3, float& qDot4)
 {
     // dq/dt = 0.5 * q ⊗ omega_q
 
@@ -48,12 +46,7 @@ static bool normalizeVector(float& x, float& y, float& z)
 
 static void normalizeQuaternion()
 {
-    float recipNorm = invSqrt(
-        q0 * q0 +
-        q1 * q1 +
-        q2 * q2 +
-        q3 * q3
-    );
+    float recipNorm = invSqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3);
 
     q0 *= recipNorm;
     q1 *= recipNorm;
@@ -62,10 +55,8 @@ static void normalizeQuaternion()
 }
 
 
-static void integrateQuaternion(
-    float qDot1, float qDot2,
-    float qDot3, float qDot4,
-    float invSampleFreq)
+static void integrateQuaternion(float qDot1, float qDot2, float qDot3, float qDot4,
+                                float invSampleFreq)
 {
     q0 += qDot1 * invSampleFreq;
     q1 += qDot2 * invSampleFreq;
