@@ -1,5 +1,6 @@
 #include<Arduino.h>
 #include "configs/configs.h"
+#include "radio_communication.h"
 
 void radioSetup() {
   // Mode recepteur PPM 

@@ -6,6 +6,7 @@
 #include "Radio/radio_command.h"
 #include "Radio/radio_communication.h"
 #include "Safety/failsafe.h"
+#include "actuators.h"
 
 
 void commandMotors() {

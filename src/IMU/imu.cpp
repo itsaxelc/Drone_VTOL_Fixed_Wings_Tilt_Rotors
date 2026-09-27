@@ -2,6 +2,7 @@
 #include "configs/configs.h"
 #include "IMU/madgwick.h"
 #include "Helpers/timing.h"
+#include "imu.h"
 
 void IMUinit() {
   //DESCRIPTION: Fonction d'initialisation del'IMU
@@ -84,6 +85,7 @@ void getIMUdata() {
   GyroY_prev = GyroY;
   GyroZ_prev = GyroZ;
 
+  MgX=MgY=MgZ=0;
   //Magnetometer
   MagX = MgX/6.0; //uT
   MagY = MgY/6.0;

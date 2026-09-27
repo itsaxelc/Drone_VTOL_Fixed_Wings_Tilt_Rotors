@@ -1,5 +1,7 @@
 #include<Arduino.h>
-#include "../configs/configs.h"
+#include<math.h>
+#include "configs/configs.h"
+#include "madgwick.h"
 
 // =========================
 // Fonctions communes

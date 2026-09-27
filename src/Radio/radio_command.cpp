@@ -1,30 +1,7 @@
 #include<Arduino.h>
 #include "configs/configs.h"
 #include "radio_communication.h"
-
-
-void scaleCommands() {
-  //DESCRIPTION: Fonction de mise à l’échelle des commandes d’actionneurs normalisées vers les valeurs du protocole ESC/servo.
-
-  // Mis à l’échelle entre 125 µs et 250 µs pour le protocole OneShot125
-  m1_command_PWM = m1_command_scaled*125 + 125;
-  m2_command_PWM = m2_command_scaled*125 + 125;
-
-  // Contraindre les commandes des moteurs dans les limites du protocole OneShot125
-  m1_command_PWM = constrain(m1_command_PWM, 125, 250);
-  m2_command_PWM = constrain(m2_command_PWM, 125, 250);
-
-  // Mis à l’échelle entre 0 et 180 pour les servos
-  s1_command_PWM = s1_command_scaled*180;
-  s2_command_PWM = s2_command_scaled*180;
-  s3_command_PWM = s3_command_scaled*180;
-  
-  // Contraindre les commandes des servos dans les limites de la bibliothèque Servo
-  s1_command_PWM = constrain(s1_command_PWM, 0, 180);
-  s2_command_PWM = constrain(s2_command_PWM, 0, 180);
-  s3_command_PWM = constrain(s3_command_PWM, 0, 180);
-
-}
+#include "radio_command.h"
 
 void getCommands() {
   //DESCRIPTION : Cette fonction récupère les commandes radio les plus récentes sous forme de signaux PWM par canal X, où X correspond au numéro du canal

@@ -1,5 +1,6 @@
 #include<Arduino.h>
 #include "configs/configs.h"
+#include "timing.h"
 
 void loopRate(int freq) {
   //DESCRIPTION: Cette fonction régule la fréquence de la boucle principale à la fréquence spécifiée (Ici c'est 2KHz)

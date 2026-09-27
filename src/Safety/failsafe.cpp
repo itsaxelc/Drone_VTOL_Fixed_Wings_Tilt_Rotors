@@ -1,5 +1,6 @@
 #include<Arduino.h>
 #include "configs/configs.h"
+#include "failsafe.h"
 
 void failSafe() {
   //DESCRIPTION: Si la radio fournit des valeurs invalides (bruit/valeurs corrompues), cette fonction remet toutes les commandes à leurs valeurs par défaut
