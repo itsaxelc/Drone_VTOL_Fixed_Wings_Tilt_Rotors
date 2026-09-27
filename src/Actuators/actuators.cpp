@@ -38,6 +38,67 @@ void commandMotors() {
   }
 }
 
+void controlMixer() {
+  // DESCRIPTION : Mélange les commandes mises à l’échelle issues du contrôleur PID vers les actionneurs selon la configuration du véhicule
+
+  // transition_fader : 1 = hover (rotors verticaux), 0 = cruise (rotors horizontaux)
+
+  m1_command_scaled = thro_des - roll_PID - (1.0 - transition_fader)*yaw_PID; // moteur droit
+  m2_command_scaled = thro_des + roll_PID + (1.0 - transition_fader)*yaw_PID; // moteur gauche
+
+  // Scaling
+  float tilt_max = max(m1_command_scaled, m2_command_scaled);
+  float tilt_min = min(m1_command_scaled, m2_command_scaled);
+
+  float scale=1;
+
+  if (tilt_max > 1.0 || tilt_min < 0.0) {
+    float scale_max = (1.0 - thro_des) / (tilt_max - thro_des);
+    float scale_min = (thro_des - 0.0) / (thro_des - tilt_min);
+    scale = min(scale_max, scale_min);
+  }
+
+  m1_command_scaled = thro_des + (m1_command_scaled - thro_des) * scale;
+  m2_command_scaled = thro_des + (m2_command_scaled - thro_des) * scale;
+
+  m1_command_scaled = constrain(m1_command_scaled, 0.0, 1.0);
+  m2_command_scaled = constrain(m2_command_scaled, 0.0, 1.0);
+
+  // Inclinaison de base des rotors : planning direct par transition_fader, pas par le PID 
+  float tilt_cmd = tilt_servo_cruise_pos + transition_fader*(tilt_servo_hover_pos-tilt_servo_cruise_pos);
+
+  // Pitch en hover : inclinaison COMMUNE des deux rotors, nulle en cruise 
+  float tilt_pitch_common = transition_fader*k_pitch_tilt_collective*pitch_PID;
+
+  // Yaw en hover : inclinaison DIFFÉRENTIELLE des deux rotors, nulle en cruise 
+  float tilt_yaw_diff = transition_fader*k_yaw_tilt_diff*yaw_PID;
+
+  float s1_raw=tilt_cmd + tilt_pitch_common + tilt_yaw_diff; // tilt rotor droit
+  float s2_raw=tilt_cmd - tilt_pitch_common + tilt_yaw_diff; // tilt rotor gauche
+
+  tilt_max = max(s1_raw, s2_raw);
+  tilt_min = min(s1_raw, s2_raw);
+
+  if (tilt_max > 1.0 || tilt_min < 0.0) {
+    float scale_max = (tilt_max > tilt_cmd) ? (1.0 - tilt_cmd) / (tilt_max - tilt_cmd) : 1.0;
+    float scale_min = (tilt_min < tilt_cmd) ? (tilt_cmd - 0.0) / (tilt_cmd - tilt_min) : 1.0;
+    float tilt_scale = min(scale_max, scale_min);
+    s1_command_scaled = tilt_cmd + (s1_raw - tilt_cmd) * tilt_scale;
+    s2_command_scaled = tilt_cmd + (s2_raw - tilt_cmd) * tilt_scale;
+  }
+  
+  else {
+    s1_command_scaled = s1_raw;
+    s2_command_scaled = s2_raw;
+  }
+
+  s1_command_scaled = constrain(s1_command_scaled,0.0,1.0);
+  s2_command_scaled = constrain(s2_command_scaled,0.0,1.0);
+
+  // Pitch en cruise : gouverne de profondeur, nulle en hover
+  s3_command_scaled = constrain(elevator_trim + (1.0 - transition_fader)*pitch_PID, 0.0, 1.0);
+}
+
 void armMotors(){
   // Description : Fonction qui envoie plusieurs impulsions de commande aux moteurs, utilisé pour armer les moteurs dans la fonction setup()
 

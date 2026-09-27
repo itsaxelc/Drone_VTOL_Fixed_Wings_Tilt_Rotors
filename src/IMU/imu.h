@@ -7,3 +7,5 @@ void getIMUdata();
 void calculate_IMU_error();
 
 void calibrateAttitude();
+
+void calibrateMagnetometer();

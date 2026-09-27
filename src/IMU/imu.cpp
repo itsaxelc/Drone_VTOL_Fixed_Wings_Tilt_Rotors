@@ -189,3 +189,50 @@ void calibrateAttitude() {
     loopRate(2000); // Ne pas dépasser 2KHz
   }
 }
+
+void calibrateMagnetometer() {
+  #if defined USE_MPU9250_SPI 
+    float success;
+    Serial.println("Beginning magnetometer calibration in");
+    Serial.println("3...");
+    delay(1000);
+    Serial.println("2...");
+    delay(1000);
+    Serial.println("1...");
+    delay(1000);
+    Serial.println("Rotate the IMU about all axes until complete.");
+    Serial.println(" ");
+    success = mpu9250.calibrateMag();
+    if(success) {
+      Serial.println("Calibration Successful!");
+      Serial.println("Please comment out the calibrateMagnetometer() function and copy these values into the code:");
+      Serial.print("float MagErrorX = ");
+      Serial.print(mpu9250.getMagBiasX_uT());
+      Serial.println(";");
+      Serial.print("float MagErrorY = ");
+      Serial.print(mpu9250.getMagBiasY_uT());
+      Serial.println(";");
+      Serial.print("float MagErrorZ = ");
+      Serial.print(mpu9250.getMagBiasZ_uT());
+      Serial.println(";");
+      Serial.print("float MagScaleX = ");
+      Serial.print(mpu9250.getMagScaleFactorX());
+      Serial.println(";");
+      Serial.print("float MagScaleY = ");
+      Serial.print(mpu9250.getMagScaleFactorY());
+      Serial.println(";");
+      Serial.print("float MagScaleZ = ");
+      Serial.print(mpu9250.getMagScaleFactorZ());
+      Serial.println(";");
+      Serial.println(" ");
+      Serial.println("If you are having trouble with your attitude estimate at a new flying location, repeat this process as needed.");
+    }
+    else {
+      Serial.println("Calibration Unsuccessful. Please reset the board and try again.");
+    }
+  
+    while(1); // Arrête le code ici pour ne pas entrer dans la boucle principale jusqu'à ce que la fonction soit décommentée
+  #endif
+  Serial.println("Error: MPU9250 not selected. Cannot calibrate non-existent magnetometer.");
+  while(1); // Arrête le code ici pour ne pas entrer dans la boucle principale jusqu'à ce que la fonction soit décommentée
+}

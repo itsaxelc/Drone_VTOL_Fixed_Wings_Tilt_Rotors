@@ -48,3 +48,10 @@ void getCommands() {
   channel_3_pwm_prev = channel_3_pwm;
   channel_4_pwm_prev = channel_4_pwm;
 }
+
+void armedStatus() {
+  // Description : vérifie si la coupure des gaz est désactivée et si la manette des gaz est faible en vue de démarrer le vol
+  if ((channel_5_pwm < 1500) && (channel_1_pwm < 1050)) {
+    armedFly = true;
+  }
+}

@@ -30,3 +30,13 @@ void loopBlink() {
       }
   }
 }
+
+void setupBlink(int numBlinks,int upTime, int downTime) {
+  //DESCRIPTION: Fonction pour faire clignoter la LED builtin selon le comportement souhaité
+  for (int j = 1; j<= numBlinks; j++) {
+    digitalWrite(13, LOW);
+    delay(downTime);
+    digitalWrite(13, HIGH);
+    delay(upTime);
+  }
+}
