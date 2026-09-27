@@ -10,5 +10,3 @@ void printPIDoutput();
 void printMotorCommands();
 void printServoCommands();
 void printLoopRate();
-
-float invSqrt(float x);
