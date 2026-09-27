@@ -213,6 +213,16 @@ int m1_command_PWM, m2_command_PWM;
 float s1_command_scaled, s2_command_scaled, s3_command_scaled;
 int s1_command_PWM, s2_command_PWM, s3_command_PWM;
 
+// Variables qui stockent les instants de front montant de chaque canal PWM pour calculer les largeurs d'impulsions
+unsigned long rising_edge_start_1, rising_edge_start_2, rising_edge_start_3, rising_edge_start_4, rising_edge_start_5, rising_edge_start_6; 
+// Variables qui stockent les largeurs d'impulsion de chaque canal PWM
+unsigned long channel_1_raw, channel_2_raw, channel_3_raw, channel_4_raw, channel_5_raw, channel_6_raw;
+// Compteur qui permet de passer d'une valeur d'impulsion à une autre dans le PPM
+int ppm_counter = 0;
+// Variable qui stocke la durée entre les appels de fonction getPPM, durée qui permet de récupérer
+unsigned long time_ms = 0;
+
+
 // variable pour le statut du vol
 bool armedFly = false; // False=Pas autorisé à voler
 

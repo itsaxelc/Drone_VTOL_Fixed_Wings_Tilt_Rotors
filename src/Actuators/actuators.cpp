@@ -3,6 +3,9 @@
 #include "IMU/imu.h"
 #include "IMU/madgwick.h"
 #include "Helpers/timing.h"
+#include "Radio/radio_command.h"
+#include "Radio/radio_communication.h"
+
 
 void commandMotors() {
   // Description : Fonction qui envoie les impulsions de commandes aux broches des moteurs par le protocole OneShot125
