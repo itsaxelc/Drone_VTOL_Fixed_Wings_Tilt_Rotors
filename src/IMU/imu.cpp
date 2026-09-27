@@ -1,5 +1,7 @@
 #include<Arduino.h>
-#include "../configs/configs.h"
+#include "configs/configs.h"
+#include "IMU/madgwick.h"
+#include "Helpers/timing.h"
 
 void IMUinit() {
   //DESCRIPTION: Fonction d'initialisation del'IMU

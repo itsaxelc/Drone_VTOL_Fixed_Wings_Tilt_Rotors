@@ -1,5 +1,8 @@
 #include<Arduino.h>
-#include "../configs/configs.h"
+#include "configs/configs.h"
+#include "IMU/imu.h"
+#include "IMU/madgwick.h"
+#include "Helpers/timing.h"
 
 void commandMotors() {
   // Description : Fonction qui envoie les impulsions de commandes aux broches des moteurs par le protocole OneShot125
